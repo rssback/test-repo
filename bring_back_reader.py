@@ -16,10 +16,10 @@ async def main():
         page = await browser.new_page()
 
         # Go to the target webpage
-        await page.goto('https://developer.chrome.com/blog')  # Replace with your target URL
+        await page.goto('https://eksiseyler.com')  # Replace with your target URL
 
         # Wait for the content to load (modify as needed)
-        await page.wait_for_selector('.devsite-card-wrapper')  # Replace with relevant selector
+        await page.wait_for_selector('#main-content')  # Replace with relevant selector
 
         # Get the page content
         content = await page.content()
@@ -34,15 +34,15 @@ async def main():
         # Example: print(soup.prettify())
 
         # Extract the card details
-        cards = soup.find_all("div", class_="devsite-card-wrapper")
+        cards = soup.find_all("div", class_=".content-box")
         card_data = []
 
         for card in cards:
             card_info = {
-                "displaytitle": card.get("displaytitle", ""),
-                "image": card.get("image", ""),
+                "displaytitle": card.get("content-title", ""),
+                "image": card.get("content-img", ""),
                 "summary": card.get("summary", ""),
-                "url": card.get("url", ""),
+                "url": card.get("content-img a", ""),
                 "timestamp": card.get("timestamp", "")
             }
             card_data.append(card_info)
@@ -50,9 +50,9 @@ async def main():
         # Generate RSS feed
 
         fg = FeedGenerator()
-        fg.title('Google Chrome Developer Blog')
-        fg.link(href='https://developer.chrome.com/blog', rel='alternate')
-        fg.description('Latest blog posts from the Google Developer Blog')
+        fg.title('Ekşi Şeyler')
+        fg.link(href='https://eksiseyler.com/', rel='alternate')
+        fg.description('RSS Feeds')
 
         # Get the current timestamp
         current_timestamp = datetime.datetime.now(pytz.utc)
